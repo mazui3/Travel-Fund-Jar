@@ -1,0 +1,1 @@
+// Deprecated in favor of integrated column in App.tsx

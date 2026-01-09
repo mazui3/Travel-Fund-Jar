@@ -1,0 +1,5 @@
+{
+  "name": "Travel Fund Jar",
+  "description": "A collaborative todo list and savings tracker for two friends. Missed tasks turn into travel funds in a shared piggy jar.",
+  "requestFramePermissions": []
+}
