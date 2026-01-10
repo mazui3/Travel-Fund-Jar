@@ -64,8 +64,8 @@ const App: React.FC = () => {
     const loadHistory = async () => {
       try {
         const [m3Res, sealphieRes] = await Promise.all([
-          fetch('https://raw.githubusercontent.com/mazui3/Travel-Fund-Jar/refs/heads/main/m3_history.json'),
-          fetch('https://raw.githubusercontent.com/mazui3/Travel-Fund-Jar/refs/heads/main/sealphie_history.json')
+          fetch('https://raw.githubusercontent.com/mazui3/TravelFundJarData/refs/heads/main/m3_history.json'),
+          fetch('https://raw.githubusercontent.com/mazui3/TravelFundJarData/refs/heads/main/sealphie_history.json')
         ]);
         if (!m3Res.ok || !sealphieRes.ok) throw new Error('Failed to fetch history');
         setM3Logs(await m3Res.json());
