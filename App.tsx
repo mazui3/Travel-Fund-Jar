@@ -60,7 +60,7 @@ const App: React.FC = () => {
   }, []);
 
   const totalAmount = useMemo(() => {
-    return m3Logs.reduce((sum, l) => sum + l.amount, 0) + 
+    return m3Logs.reduce((sum, l) => sum + l.amount, 0) +
            sealphieLogs.reduce((sum, l) => sum + l.amount, 0);
   }, [m3Logs, sealphieLogs]);
 
@@ -153,9 +153,9 @@ const App: React.FC = () => {
     if (currentTheme === 'afternoon') return (
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         {Array.from({ length: 15 }).map((_, i) => (
-          <div key={i} className="absolute text-white/30 animate-twinkle" 
-               style={{ 
-                 top: `${Math.random() * 100}%`, 
+          <div key={i} className="absolute text-white/30 animate-twinkle"
+               style={{
+                 top: `${Math.random() * 100}%`,
                  left: `${Math.random() * 100}%`,
                  animationDelay: `${Math.random() * 5}s`
                }}>
@@ -171,12 +171,12 @@ const App: React.FC = () => {
       <div className="fixed inset-0 pointer-events-none">
         {Array.from({ length: 30 }).map((_, i) => (
           <div key={i} className="absolute bg-white/40 rounded-full animate-twinkle"
-               style={{ 
-                 width: Math.random() * 3 + 'px', 
+               style={{
+                 width: Math.random() * 3 + 'px',
                  height: Math.random() * 3 + 'px',
-                 top: Math.random() * 70 + '%', 
+                 top: Math.random() * 70 + '%',
                  left: Math.random() * 100 + '%',
-                 animationDelay: Math.random() * 10 + 's' 
+                 animationDelay: Math.random() * 10 + 's'
                }} />
         ))}
         <div className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-black/40 to-transparent flex items-end justify-center pb-4 opacity-20">
@@ -193,7 +193,7 @@ const App: React.FC = () => {
   const UserColumn = ({ name, tasks, logs }: { name: string, tasks: typeof M3_TASKS, logs: Contribution[] }) => {
     const sortedLogs = logs.slice().reverse();
     const hasHanamaru = logs.some(log => log.amount === 0 && tasks.some(t => t.text === log.taskName && t.freq === 'Weekly'));
-    
+
     return (
       <div className={`flex flex-col h-full w-full p-4 md:p-6 ${theme.card} backdrop-blur-xl rounded-[2.5rem] border border-white/20 shadow-xl transition-all hover:bg-white/20 relative theme-transition`}>
         <div className="relative flex items-center gap-4 mb-6">
@@ -201,14 +201,14 @@ const App: React.FC = () => {
              <User size={24} className="md:size-7 text-slate-700" />
           </div>
           <h2 className={`text-xl md:text-3xl font-bold ${theme.text} tracking-tight`}>{name}</h2>
-          
+
           {hasHanamaru && (
             <div className="absolute -top-8 -right-6 md:-right-12 w-20 h-20 md:w-28 md:h-28 z-[150] cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95"
                  onClick={triggerCelebration}>
-              <img 
-                src="https://github.com/mazui3/Travel-Fund-Jar/blob/main/Hanamaru.png" 
-                alt="Hanamaru Badge" 
-                className="w-full h-full object-contain drop-shadow-2xl rounded-full border-4 border-white bg-white" 
+              <img
+                src="https://raw.githubusercontent.com/mazui3/Travel-Fund-Jar/refs/heads/main/Hanamaru.png"
+                alt="Hanamaru Badge"
+                className="w-full h-full object-contain drop-shadow-2xl rounded-full border-4 border-white bg-white"
               />
             </div>
           )}
@@ -253,7 +253,7 @@ const App: React.FC = () => {
   return (
     <div className={`h-screen w-full flex flex-col ${theme.bg} theme-transition overflow-hidden relative`}>
       <ThemeMagicOverlay />
-      
+
       {/* Streamers Overlay */}
       {streamers.map(s => (
         <div key={s.id} className="streamer"
@@ -272,7 +272,7 @@ const App: React.FC = () => {
           </div>
           <h1 className={`text-sm font-black uppercase tracking-[0.2em] ${theme.header} transition-colors`}>Travel Fund Jar</h1>
         </div>
-        
+
         <div className="flex items-center gap-4">
           <div className={`px-3 py-1 rounded-full ${theme.card} backdrop-blur-md flex items-center gap-2 border border-white/20 transition-all`}>
             {theme.icon}
@@ -309,13 +309,13 @@ const App: React.FC = () => {
               ))}
             </div>
 
-            <div 
+            <div
               className={`w-full h-full flex items-center justify-center cursor-pointer transform transition-all hover:scale-105 active:scale-95 ${isShaking ? 'animate-shake' : ''}`}
               onClick={playJarAnimation}
             >
-              <img 
-                src="https://github.com/mazui3/Travel-Fund-Jar/blob/main/Piggy.png" 
-                alt="Piggy Bank" 
+              <img
+                src="https://raw.githubusercontent.com/mazui3/Travel-Fund-Jar/refs/heads/main/Piggy.png"
+                alt="Piggy Bank"
                 className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
               />
             </div>
