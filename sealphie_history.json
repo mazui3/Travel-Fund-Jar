@@ -1,13 +1,6 @@
 
 [
   {
-    "id": "h-2",
-    "owner": "sealphie",
-    "amount": 20,
-    "taskName": "Piano Lesson",
-    "date": "Jan 02"
-  },
-  {
     "id": "h-3",
     "owner": "sealphie",
     "amount": 0,
