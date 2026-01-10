@@ -206,7 +206,7 @@ const App: React.FC = () => {
             <div className="absolute -top-8 -right-6 md:-right-12 w-20 h-20 md:w-28 md:h-28 z-[150] cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95"
                  onClick={triggerCelebration}>
               <img 
-                src="/Hanamaru.png" 
+                src="https://github.com/mazui3/Travel-Fund-Jar/blob/main/Hanamaru.png" 
                 alt="Hanamaru Badge" 
                 className="w-full h-full object-contain drop-shadow-2xl rounded-full border-4 border-white bg-white" 
               />
@@ -314,7 +314,7 @@ const App: React.FC = () => {
               onClick={playJarAnimation}
             >
               <img 
-                src="/Piggy.png" 
+                src="https://github.com/mazui3/Travel-Fund-Jar/blob/main/Piggy.png" 
                 alt="Piggy Bank" 
                 className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
               />
