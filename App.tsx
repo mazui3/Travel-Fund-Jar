@@ -12,7 +12,7 @@ const M3_TASKS = [
 const SEALPHIE_TASKS = [
   { id: 's1', text: 'Sleeping 8 hours', freq: 'Daily' },
   { id: 's2', text: 'Ggym/Yoga/Rock Climbing', freq: 'Daily' },
-  { id: 's3', text: 'Writing diary', freq: 'Weekly' },
+  { id: 's3', text: 'Writing diaries', freq: 'Weekly' },
 ];
 
 const CELEBRATION_COLORS = ['#f472b6', '#34d399', '#60a5fa', '#fbbf24', '#a78bfa', '#f87171', '#ff0000', '#00ff00', '#ffff00'];
