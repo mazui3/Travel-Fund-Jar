@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { UserType, Contribution } from './types';
-import { User, DollarSign, Info, Plane, Sun, Moon, Cloud, Flower2, Wind, Building2, Coffee } from 'lucide-react';
+import { User, DollarSign, Info, Plane, Sun, Moon, Cloud, Flower2, Wind, Building2, Coffee, Lamp } from 'lucide-react';
 
 const M3_TASKS = [
   { id: 'm1', text: 'Eating veggies', freq: 'Daily' },
@@ -17,7 +17,7 @@ const SEALPHIE_TASKS = [
 
 const CELEBRATION_COLORS = ['#f472b6', '#34d399', '#60a5fa', '#fbbf24', '#a78bfa', '#f87171', '#ff0000', '#00ff00', '#ffff00'];
 
-type TimeTheme = 'morning' | 'afternoon' | 'evening' | 'night' | 'early';
+type TimeTheme = 'morning' | 'afternoon' | 'evening' | 'night' | 'midnight' | 'early';
 
 const App: React.FC = () => {
   const [m3Logs, setM3Logs] = useState<Contribution[]>([]);
@@ -27,7 +27,7 @@ const App: React.FC = () => {
   const [streamers, setStreamers] = useState<{ id: number; left: string; color: string; delay: string; duration: string; startRot: string; endRot: string; width: string; height: string }[]>([]);
   const [currentTheme, setCurrentTheme] = useState<TimeTheme>('morning');
 
-  // Pre-calculate random decoration data so it doesn't change on re-render
+  // Pre-calculate random decoration data
   const afternoonFlowers = useMemo(() => Array.from({ length: 30 }).map((_, i) => ({
     id: i,
     top: Math.random() * 100,
@@ -45,18 +45,27 @@ const App: React.FC = () => {
     delay: Math.random() * 10
   })), []);
 
+  const fairyLights = useMemo(() => Array.from({ length: 25 }).map((_, i) => ({
+    id: i,
+    left: (i * 4) + (Math.random() * 2) + "%",
+    top: (Math.random() * 8) + "%",
+    delay: Math.random() * 5,
+    duration: 3 + Math.random() * 3
+  })), []);
+
   useEffect(() => {
     const updateTheme = () => {
       const hour = new Date().getHours();
       if (hour >= 8 && hour < 12) setCurrentTheme('morning');
       else if (hour >= 12 && hour < 16) setCurrentTheme('afternoon');
       else if (hour >= 16 && hour < 20) setCurrentTheme('evening');
-      else if (hour >= 20 || hour < 4) setCurrentTheme('night');
-      else setCurrentTheme('early');
+      else if (hour >= 20 && hour < 24) setCurrentTheme('night'); // 8pm - 12am
+      else if (hour >= 0 && hour < 4) setCurrentTheme('midnight'); // 12am - 4am
+      else setCurrentTheme('early'); // 4am - 8am
     };
 
     updateTheme();
-    const interval = setInterval(updateTheme, 60000); // Check every minute
+    const interval = setInterval(updateTheme, 60000);
     return () => clearInterval(interval);
   }, []);
 
@@ -146,6 +155,15 @@ const App: React.FC = () => {
           header: 'text-white',
           icon: <Moon className="text-indigo-200" size={20} />
         };
+      case 'midnight':
+        return {
+          bg: 'bg-gradient-to-br from-[#120808] via-[#2d1b1b] to-[#0f0a14]',
+          card: 'bg-amber-900/10 border-amber-500/10 shadow-[0_0_40px_rgba(251,191,36,0.05)]',
+          text: 'text-amber-50',
+          accent: 'text-amber-400',
+          header: 'text-amber-200',
+          icon: <Lamp className="text-amber-300" size={20} />
+        };
       case 'early':
         return {
           bg: 'bg-gradient-to-tr from-amber-50 via-orange-100 to-rose-200',
@@ -198,9 +216,22 @@ const App: React.FC = () => {
                  animationDelay: star.delay + 's'
                }} />
         ))}
-        <div className="absolute bottom-0 w-full h-24 bg-gradient-to-t from-black/40 to-transparent flex items-end justify-center pb-4 opacity-20">
-          <Building2 size={200} className="text-white/20 -mb-10" />
-        </div>
+      </div>
+    );
+    if (currentTheme === 'midnight') return (
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        {/* String wire */}
+        <div className="absolute top-[4%] w-full h-[1px] bg-white/5 shadow-sm"></div>
+        {/* Fairy Lights */}
+        {fairyLights.map((light) => (
+          <div key={light.id} className="absolute" style={{ left: light.left, top: light.top }}>
+            <div className="w-[1px] h-3 bg-white/20 mx-auto"></div>
+            <div className="w-2 h-3 rounded-full bg-amber-400 animate-flicker shadow-[0_0_10px_rgba(251,191,36,0.6)]"
+                 style={{ animationDelay: `${light.delay}s`, animationDuration: `${light.duration}s` }}></div>
+          </div>
+        ))}
+        {/* Subtle warm vignettes */}
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_120%,rgba(251,191,36,0.05),transparent_70%)]"></div>
       </div>
     );
     if (currentTheme === 'early') return (
@@ -214,10 +245,10 @@ const App: React.FC = () => {
     const hasHanamaru = logs.some(log => log.amount === 0 && tasks.some(t => t.text === log.taskName && t.freq === 'Weekly'));
 
     return (
-      <div className={`flex flex-col h-full w-full p-4 lg:p-6 ${theme.card} backdrop-blur-xl rounded-[2.5rem] border border-white/20 shadow-xl transition-all hover:bg-white/20 relative theme-transition mb-4 lg:mb-0`}>
+      <div className={`flex flex-col h-full w-full p-4 lg:p-6 ${theme.card} backdrop-blur-xl rounded-[2.5rem] border border-white/10 shadow-xl transition-all hover:bg-white/5 relative theme-transition mb-4 lg:mb-0`}>
         <div className="relative flex items-center gap-4 mb-6">
-          <div className="w-12 h-12 lg:w-16 lg:h-16 shrink-0 rounded-full border-2 border-slate-900/10 flex items-center justify-center bg-white/80 shadow-inner">
-             <User size={24} className="lg:size-7 text-slate-700" />
+          <div className="w-12 h-12 lg:w-16 lg:h-16 shrink-0 rounded-full border border-white/10 flex items-center justify-center bg-white/5 shadow-inner">
+             <User size={24} className={`lg:size-7 ${theme.text} opacity-80`} />
           </div>
           <h2 className={`text-xl lg:text-3xl font-bold ${theme.text} tracking-tight`}>{name}</h2>
 
@@ -237,8 +268,8 @@ const App: React.FC = () => {
           <h3 className={`text-[9px] font-black uppercase tracking-widest ${theme.text} mb-3 opacity-50`}>Current Goals</h3>
           <ul className="space-y-2">
             {tasks.map(task => (
-              <li key={task.id} className="group flex items-center gap-3 p-3 rounded-2xl bg-white/30 border border-white/10 hover:border-white/30 transition-all">
-                <span className={`text-[8px] bg-slate-900/10 px-2 py-0.5 rounded-full ${theme.text} font-black uppercase whitespace-nowrap shrink-0`}>
+              <li key={task.id} className="group flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-all">
+                <span className={`text-[8px] bg-white/10 px-2 py-0.5 rounded-full ${theme.text} font-black uppercase whitespace-nowrap shrink-0`}>
                   {task.freq}
                 </span>
                 <div className={`text-sm lg:text-base font-medium ${theme.text} truncate`}>
@@ -253,7 +284,7 @@ const App: React.FC = () => {
           <h3 className={`text-[9px] font-black uppercase tracking-widest ${theme.text} mb-3 opacity-50`}>Savings History</h3>
           <div className="flex-1 overflow-y-auto max-h-[400px] lg:max-h-none pr-1 space-y-1.5 scrollbar-hide">
             {sortedLogs.map(log => (
-              <div key={log.id} className={`p-3 bg-white/10 rounded-xl text-[13px] border border-white/5 flex justify-between items-center animate-in fade-in slide-in-from-top-1 duration-300`}>
+              <div key={log.id} className={`p-3 bg-white/5 rounded-xl text-[13px] border border-white/5 flex justify-between items-center animate-in fade-in slide-in-from-top-1 duration-300`}>
                 <div className="min-w-0 flex items-baseline gap-2">
                   <div className={`font-bold ${theme.text} truncate`}>{log.taskName}</div>
                   <div className={`text-[11px] ${theme.text} shrink-0 opacity-50 font-medium`}>{log.date}</div>
@@ -293,7 +324,7 @@ const App: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <div className={`hidden sm:flex px-3 py-1 rounded-full ${theme.card} backdrop-blur-md items-center gap-2 border border-white/20 transition-all`}>
+          <div className={`hidden sm:flex px-3 py-1 rounded-full ${theme.card} backdrop-blur-md items-center gap-2 border border-white/10 transition-all`}>
             {theme.icon}
             <span className={`text-[10px] font-black uppercase tracking-widest ${theme.text}`}>{currentTheme}</span>
           </div>
@@ -304,7 +335,6 @@ const App: React.FC = () => {
       </header>
 
       <main className="flex-1 w-full max-w-[1440px] mx-auto px-4 pb-12 lg:pb-4 flex flex-col lg:flex-row gap-4 items-stretch overflow-visible relative z-20">
-        {/* Travel Fund - TOP on vertical, CENTER on horizontal */}
         <div className="w-full lg:w-[300px] xl:w-[380px] flex flex-col items-center justify-center p-2 gap-4 shrink-0 order-1 lg:order-2">
           <div className="w-full bg-slate-900/95 text-white p-6 rounded-[2.5rem] shadow-2xl text-center transform -rotate-1 hover:rotate-0 transition-transform backdrop-blur-xl border border-white/10">
             <div className="text-[10px] font-black uppercase tracking-[0.4em] opacity-50 mb-2 text-lime-400/50">Travel Funds</div>
@@ -338,19 +368,17 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        {/* M3 Section - SECOND on vertical, LEFT on horizontal */}
         <div className="flex-1 min-h-[400px] lg:min-h-0 order-2 lg:order-1">
           <UserColumn name="M3" tasks={M3_TASKS} logs={m3Logs} />
         </div>
 
-        {/* Sealphie Section - THIRD on vertical, RIGHT on horizontal */}
         <div className="flex-1 min-h-[400px] lg:min-h-0 order-3 lg:order-3">
           <UserColumn name="Sealphie" tasks={SEALPHIE_TASKS} logs={sealphieLogs} />
         </div>
       </main>
 
       <footer className={`flex-none py-3 text-center ${theme.text} text-[9px] font-black uppercase tracking-[0.5em] opacity-30 relative z-10`}>
-        Future Adventures Await &middot; 2026
+        Savings or do somethings, win win &middot; 2026
       </footer>
     </div>
   );

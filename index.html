@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Fund Jar</title>
     <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/mazui3/Travel-Fund-Jar/refs/heads/main/plane-departure-solid-full.svg">
-    <i class="fa-solid fa-plane-departure"></i>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -16,7 +15,6 @@
             min-height: 100vh;
         }
 
-        /* Smooth transition for theme switching */
         .theme-transition {
             transition: background 2s ease-in-out, color 0.5s ease-in-out;
         }
@@ -70,7 +68,6 @@
           pointer-events: none;
         }
 
-        /* Ambient Animations */
         @keyframes drift {
             from { transform: translateX(-10%) translateY(0); }
             to { transform: translateX(10%) translateY(-10px); }
@@ -97,7 +94,15 @@
             animation: twinkle 3s ease-in-out infinite;
         }
 
-        /* Custom scrollbar */
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; filter: brightness(1); }
+            50% { opacity: 1; filter: brightness(1.3) contrast(1.2); }
+            75% { opacity: 0.9; }
+        }
+        .animate-flicker {
+            animation: flicker 4s ease-in-out infinite;
+        }
+
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
@@ -115,7 +120,8 @@
     "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
     "vite": "https://esm.sh/vite@^7.3.1",
     "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
-    "path": "https://esm.sh/path@^0.12.7"
+    "path": "https://esm.sh/path@^0.12.7",
+    "url": "https://esm.sh/url@^0.11.4"
   }
 }
 </script>
