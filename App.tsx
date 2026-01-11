@@ -135,7 +135,7 @@ const App: React.FC = () => {
           text: 'text-slate-900',
           accent: 'text-emerald-700',
           header: 'text-green-900',
-          icon: <Flower2 className="text-rose-200 drop-shadow-sm" size={20} />
+          icon: <Flower2 className="text-yellow-200 drop-shadow-sm" size={20} />
         };
       case 'evening':
         return {
@@ -157,9 +157,9 @@ const App: React.FC = () => {
         };
       case 'midnight':
         return {
-          bg: 'bg-gradient-to-br from-[#120808] via-[#2d1b1b] to-[#0f0a14]',
-          card: 'bg-amber-900/10 border-amber-500/10 shadow-[0_0_40px_rgba(251,191,36,0.05)]',
-          text: 'text-amber-50',
+          bg: 'bg-gradient-to-br from-[#a36f5d] via-[#1a237e] to-[#010409]',
+          card: 'bg-blue-950/20 border-blue-500/20 shadow-[0_0_40px_rgba(59,130,246,0.08)]',
+          text: 'text-blue-50',
           accent: 'text-amber-400',
           header: 'text-amber-200',
           icon: <Lamp className="text-amber-300" size={20} />
@@ -231,7 +231,7 @@ const App: React.FC = () => {
           </div>
         ))}
         {/* Subtle warm vignettes */}
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_120%,rgba(251,191,36,0.05),transparent_70%)]"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_120%,rgba(59,130,246,0.1),transparent_70%)]"></div>
       </div>
     );
     if (currentTheme === 'early') return (
@@ -378,7 +378,7 @@ const App: React.FC = () => {
       </main>
 
       <footer className={`flex-none py-3 text-center ${theme.text} text-[9px] font-black uppercase tracking-[0.5em] opacity-30 relative z-10`}>
-        Savings or do somethings, win win &middot; 2026
+        Saving money or getting things done, win win &middot; 2026
       </footer>
     </div>
   );
