@@ -6,7 +6,7 @@ import { User, DollarSign, Info, Plane, Sun, Moon, Cloud, Flower2, Wind, Buildin
 const M3_TASKS = [
   { id: 'm1', text: 'Eating veggies', freq: 'Daily' },
   { id: 'm2', text: 'Doing something cool', freq: 'Weekly' },
-  { id: 'm3', text: 'Studying 8 hours', freq: 'Weekly' },
+  { id: 'm3', text: 'Studying 10 hours', freq: 'Weekly' },
 ];
 
 const SEALPHIE_TASKS = [
@@ -175,7 +175,23 @@ const UserColumn = ({ name, tasks, logs, theme, triggerCelebration }: {
   triggerCelebration: () => void
 }) => {
   const sortedLogs = useMemo(() => [...(logs || [])].reverse(), [logs]);
-  const hasHanamaru = useMemo(() => (logs || []).some(log => log.amount === 0 && tasks.some(t => t.text === log.taskName && t.freq === 'Weekly')), [logs, tasks]);
+  const hasHanamaru = useMemo(() => {
+    const now = new Date();
+    const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
+
+    return (logs || []).some(log => {
+      if (log.amount !== 0) return false;
+
+      // Parse log date (e.g., "Jan 09"). JS defaults to current year if not specified.
+      const logDate = new Date(log.date);
+      const timeDiff = now.getTime() - logDate.getTime();
+      const isWithinSevenDays = timeDiff >= 0 && timeDiff <= sevenDaysInMs;
+
+      const isWeeklyTask = tasks.some(t => t.text === log.taskName && t.freq === 'Weekly');
+
+      return isWithinSevenDays && isWeeklyTask;
+    });
+  }, [logs, tasks]);
 
   return (
     <div className={`flex flex-col h-full w-full p-4 lg:p-6 ${theme.card} backdrop-blur-xl rounded-[2.5rem] border border-white/10 shadow-xl transition-all hover:bg-white/5 relative theme-transition mb-4 lg:mb-0`}>
