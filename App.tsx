@@ -270,15 +270,12 @@ const App: React.FC = () => {
     const updateTheme = () => {
       const hour = new Date().getHours();
       // Theme logic hardcoded for development testing of midnight effects
-      setCurrentTheme('midnight');
-      /*
       if (hour >= 8 && hour < 12) setCurrentTheme('morning');
       else if (hour >= 12 && hour < 16) setCurrentTheme('afternoon');
       else if (hour >= 16 && hour < 20) setCurrentTheme('evening');
       else if (hour >= 20 && hour < 24) setCurrentTheme('night');
       else if (hour >= 0 && hour < 4) setCurrentTheme('midnight');
       else setCurrentTheme('early');
-      */
     };
     updateTheme();
     const interval = setInterval(updateTheme, 60000);
@@ -289,8 +286,8 @@ const App: React.FC = () => {
     const loadHistory = async () => {
       try {
         const [m3Res, sealphieRes] = await Promise.all([
-          fetch('./m3_history.json'),
-          fetch('./sealphie_history.json')
+          fetch('/.netlify/functions/get-history?file=m3_history.json'),
+          fetch('/.netlify/functions/get-history?file=sealphie_history.json')
         ]);
         if (!m3Res.ok || !sealphieRes.ok) throw new Error('Failed to fetch history');
         const m3Data = await m3Res.json();
