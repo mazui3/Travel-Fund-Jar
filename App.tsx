@@ -240,7 +240,7 @@ const UserColumn = ({ name, tasks, logs, theme, triggerCelebration }: {
       <div className="flex-1 flex flex-col min-h-0">
         <h3 className={`text-[9px] font-black uppercase tracking-widest ${theme.text} mb-3 opacity-50`}>Savings History</h3>
         {/* Changed lg:max-h-none to lg:max-h-[420px] to enable scrolling in landscape as well */}
-        <div className="flex-1 overflow-y-auto max-h-[400px] lg:max-h-[320px] pr-1 space-y-1.5 scrollbar-hide">
+        <div className="flex-1 overflow-y-auto max-h-[400px] lg:max-h-[360px] pr-1 space-y-1.5 scrollbar-hide">
           {sortedLogs.map(log => (
             <div key={log.id} className={`p-3 bg-white/5 rounded-xl text-[13px] border border-white/5 flex justify-between items-center animate-in fade-in slide-in-from-top-1 duration-300`}>
               <div className="min-w-0 flex items-baseline gap-2">
