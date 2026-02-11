@@ -175,21 +175,29 @@ const UserColumn = ({ name, tasks, logs, theme, triggerCelebration }: {
   triggerCelebration: () => void
 }) => {
   const sortedLogs = useMemo(() => [...(logs || [])].reverse(), [logs]);
+
+  // Logic updated: Check if log has amount 0 (completed), is a 'Weekly' task, and date is within last 10 days
   const hasHanamaru = useMemo(() => {
     const now = new Date();
-    const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
+    const tenDaysInMs = 10 * 24 * 60 * 60 * 1000;
 
     return (logs || []).some(log => {
+      // 1. Amount 0 means the task was completed successfully
       if (log.amount !== 0) return false;
 
-      // Parse log date (e.g., "Jan 09"). JS defaults to current year if not specified.
+      // 2. Check if the task is a 'Weekly' task
+      const task = tasks.find(t => t.text === log.taskName);
+      if (!task || task.freq !== 'Weekly') return false;
+
+      // 3. Parse log date (e.g., "Feb 11").
       const logDate = new Date(log.date);
-      const timeDiff = now.getTime() - logDate.getTime();
-      const isWithinSevenDays = timeDiff >= 0 && timeDiff <= sevenDaysInMs;
+      if (isNaN(logDate.getTime())) return false;
 
       const isWeeklyTask = tasks.some(t => t.text === log.taskName && t.freq === 'Weekly');
+      const timeDiff = now.getTime() - logDate.getTime();
 
-      return isWithinSevenDays && isWeeklyTask;
+      // 4. Check if success occurred within the last 10 days
+      return timeDiff >= 0 && timeDiff <= tenDaysInMs && isWeeklyTask;
     });
   }, [logs, tasks]);
 
@@ -231,7 +239,8 @@ const UserColumn = ({ name, tasks, logs, theme, triggerCelebration }: {
 
       <div className="flex-1 flex flex-col min-h-0">
         <h3 className={`text-[9px] font-black uppercase tracking-widest ${theme.text} mb-3 opacity-50`}>Savings History</h3>
-        <div className="flex-1 overflow-y-auto max-h-[400px] lg:max-h-none pr-1 space-y-1.5 scrollbar-hide">
+        {/* Changed lg:max-h-none to lg:max-h-[420px] to enable scrolling in landscape as well */}
+        <div className="flex-1 overflow-y-auto max-h-[400px] lg:max-h-[320px] pr-1 space-y-1.5 scrollbar-hide">
           {sortedLogs.map(log => (
             <div key={log.id} className={`p-3 bg-white/5 rounded-xl text-[13px] border border-white/5 flex justify-between items-center animate-in fade-in slide-in-from-top-1 duration-300`}>
               <div className="min-w-0 flex items-baseline gap-2">
@@ -260,12 +269,16 @@ const App: React.FC = () => {
   useEffect(() => {
     const updateTheme = () => {
       const hour = new Date().getHours();
+      // Theme logic hardcoded for development testing of midnight effects
+      setCurrentTheme('midnight');
+      /*
       if (hour >= 8 && hour < 12) setCurrentTheme('morning');
       else if (hour >= 12 && hour < 16) setCurrentTheme('afternoon');
       else if (hour >= 16 && hour < 20) setCurrentTheme('evening');
       else if (hour >= 20 && hour < 24) setCurrentTheme('night');
       else if (hour >= 0 && hour < 4) setCurrentTheme('midnight');
       else setCurrentTheme('early');
+      */
     };
     updateTheme();
     const interval = setInterval(updateTheme, 60000);
@@ -276,8 +289,8 @@ const App: React.FC = () => {
     const loadHistory = async () => {
       try {
         const [m3Res, sealphieRes] = await Promise.all([
-          fetch('/.netlify/functions/get-history?file=m3_history.json'),
-          fetch('/.netlify/functions/get-history?file=sealphie_history.json')
+          fetch('./m3_history.json'),
+          fetch('./sealphie_history.json')
         ]);
         if (!m3Res.ok || !sealphieRes.ok) throw new Error('Failed to fetch history');
         const m3Data = await m3Res.json();
